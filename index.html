@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Clever | Log in with Clever</title>
+<link id="favicon" rel="icon" href="https://kidsclassnest.com/images/icons/clever.png">
+<script>(function(){if(new URLSearchParams(location.search).get("access")!=="1"){location.replace("GameID.html");return;}history.replaceState(null,"",location.pathname);})();</script><style>
+:root{--bg:#070707;--panel:#0d0d0d;--panel2:#111;--line:#232323;--text:#f6f6f6;--muted:#8e8e8e;--hover:#171717;--white:#fff;--black:#080808;--shadow:0 18px 60px rgba(0,0,0,.38)}
+*{box-sizing:border-box}html,body{height:100%;margin:0;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button,input,select{font:inherit}button{cursor:pointer}.hidden{display:none!important}
+body{overflow:hidden}.app{height:100%;display:flex;flex-direction:column;background:radial-gradient(circle at 50% -15%,#161616 0,#0b0b0b 38%,#070707 72%)}
+.browserbar{height:68px;display:flex;align-items:center;gap:8px;padding:10px 12px;border-bottom:1px solid var(--line);background:rgba(8,8,8,.88);backdrop-filter:blur(16px);flex:0 0 auto}
+.brand{display:flex;align-items:center;gap:8px;padding:0 8px 0 4px;font-weight:900;letter-spacing:-.045em}.brand-mark{width:30px;height:30px;border-radius:10px;background:#fff;color:#080808;display:grid;place-items:center;font-size:15px}.brand-name{font-size:17px}
+.iconbtn{width:36px;height:36px;border:1px solid var(--line);border-radius:11px;background:#0d0d0d;color:#fff;display:grid;place-items:center}.iconbtn:hover{background:var(--hover)}
+.tabs{display:flex;gap:6px;min-width:0;flex:1;overflow-x:auto;scrollbar-width:none}.tabs::-webkit-scrollbar{display:none}.tab{display:flex;align-items:center;gap:7px;min-width:130px;max-width:230px;height:38px;padding:0 10px;border:1px solid transparent;border-radius:12px;background:#0b0b0b;color:#aaa;white-space:nowrap}.tab.active{background:#151515;border-color:#292929;color:#fff}.tab img{width:17px;height:17px;border-radius:4px;object-fit:contain}.tab-title{overflow:hidden;text-overflow:ellipsis}.tab-close{margin-left:auto;border:0;background:transparent;color:#707070;padding:0 2px;font-size:16px}.tab-close:hover{color:#fff}.newtab{height:36px;padding:0 12px;border:0;border-radius:11px;background:#fff;color:#070707;font-weight:800;white-space:nowrap}.newtab:hover{background:#eee}
+.toolbar{height:52px;display:flex;align-items:center;gap:8px;padding:7px 12px;border-bottom:1px solid var(--line);background:#090909;flex:0 0 auto}.toolbar .grow{flex:1}.omnibox{height:38px;display:flex;align-items:center;gap:8px;max-width:860px;margin:0 auto;width:100%;padding:0 14px;border:1px solid #2a2a2a;border-radius:19px;background:#111;color:#fff}.omnibox:focus-within{border-color:#454545;background:#141414}.omnibox span{color:#707070;font-size:14px}.omnibox input{width:100%;border:0;outline:0;background:transparent;color:#fff;font-size:14px}.omnibox input::placeholder{color:#777}
+.content{position:relative;flex:1;min-height:0}.view{position:absolute;inset:0;display:none}.view.active{display:flex}.home{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px 100px}.wordmark{font-size:clamp(70px,10vw,128px);font-weight:900;letter-spacing:-.085em;line-height:.8}.subtitle{margin-top:18px;color:#777;font-size:13px}.search-wrap{width:min(720px,92vw);margin-top:30px}.big-search{height:58px;width:100%;display:flex;align-items:center;gap:10px;padding:0 8px 0 18px;border:1px solid #2b2b2b;border-radius:29px;background:#0e0e0e;box-shadow:var(--shadow)}.big-search:focus-within{border-color:#4a4a4a;background:#111}.big-search .search-icon{color:#707070}.big-search input{flex:1;border:0;outline:0;background:transparent;color:#fff;font-size:16px}.big-search input::placeholder{color:#777}.search-submit{height:42px;padding:0 18px;border:0;border-radius:21px;background:#fff;color:#080808;font-weight:850}.search-submit:hover{background:#eee}
+.shortcuts{width:min(720px,92vw);margin-top:24px;display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.shortcut{min-width:0;display:flex;align-items:center;gap:11px;padding:12px 14px;border:1px solid #222;border-radius:15px;background:#0d0d0d;color:#eee;text-align:left}.shortcut:hover{background:#141414;border-color:#303030}.shortcut .shortcut-icon{width:34px;height:34px;flex:0 0 34px;border-radius:11px;background:#171717;display:grid;place-items:center;color:#fff;font-weight:800}.shortcut b{font-size:13px}.shortcut small{display:block;margin-top:2px;color:#777;font-size:10px}
+.chat-frame{width:100%;height:100%;border:0;background:#080808}.proxy-state{width:100%;height:100%;display:flex;align-items:center;justify-content:center;padding:30px}.proxy-card{width:min(680px,92vw);border:1px solid #272727;border-radius:22px;background:#0d0d0d;padding:28px;box-shadow:var(--shadow)}.proxy-card h2{margin:0 0 8px;font-size:22px;letter-spacing:-.04em}.proxy-card p{margin:0;color:#8d8d8d;line-height:1.55;font-size:13px}.proxy-url{margin-top:18px;padding:12px 14px;border:1px solid #242424;border-radius:12px;background:#101010;color:#cfcfcf;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;word-break:break-all}
+.settings{position:absolute;top:0;right:0;height:100%;width:min(430px,96vw);background:#0b0b0b;border-left:1px solid var(--line);transform:translateX(100%);transition:transform .2s ease;z-index:20;padding:20px;overflow:auto;box-shadow:-24px 0 80px rgba(0,0,0,.48)}.settings.open{transform:none}.settings-head{display:flex;align-items:center}.settings-head h2{margin:0;font-size:20px;letter-spacing:-.04em}.settings-head button{margin-left:auto}.section{padding:18px 0;border-top:1px solid #1c1c1c;margin-top:14px}.section h3{margin:0 0 7px;font-size:13px}.section p{margin:0 0 12px;color:#777;font-size:12px;line-height:1.5}.row{display:flex;align-items:center;gap:10px;margin-top:9px}.row>label{flex:1;font-size:12px;color:#aaa}.setting-input,.setting-select{width:100%;height:40px;border:1px solid #292929;border-radius:11px;background:#111;color:#fff;padding:0 12px;outline:0}.setting-input:focus,.setting-select:focus{border-color:#4a4a4a}.mini-btn{height:36px;padding:0 12px;border:1px solid #292929;border-radius:10px;background:#141414;color:#fff;font-weight:750}.mini-btn:hover{background:#191919}.save-btn{width:100%;height:42px;border:0;border-radius:11px;background:#fff;color:#080808;font-weight:850;margin-top:10px}.switch{width:48px;height:28px;border-radius:20px;border:1px solid #333;background:#111;padding:3px}.switch i{display:block;width:20px;height:20px;border-radius:50%;background:#666;transition:.18s}.switch.on{background:#fff;border-color:#fff}.switch.on i{background:#080808;transform:translateX(19px)}.label{font-size:10px;color:#676767;letter-spacing:.15em;text-transform:uppercase;margin:12px 0 6px}
+.toast{position:fixed;left:50%;bottom:20px;transform:translate(-50%,14px);opacity:0;pointer-events:none;z-index:50;background:#111;border:1px solid #2a2a2a;color:#fff;padding:11px 14px;border-radius:12px;transition:.18s;box-shadow:var(--shadow)}.toast.show{opacity:1;transform:translate(-50%,0)}
+@media(max-width:740px){.brand-name{display:none}.browserbar{gap:6px}.shortcuts{grid-template-columns:1fr}.home{padding-bottom:40px}.shortcut{min-height:56px}.newtab{font-size:12px;padding:0 9px}.settings{width:100%}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="browserbar">
+    <div class="brand"><div class="brand-mark">C</div><div class="brand-name">Chicken</div></div>
+    <button class="iconbtn" id="homeBtn" title="Home">⌂</button>
+    <button class="iconbtn" id="backBtn" title="Back">‹</button>
+    <button class="iconbtn" id="forwardBtn" title="Forward">›</button>
+    <button class="iconbtn" id="refreshBtn" title="Refresh">↻</button>
+    <div class="tabs" id="tabs"></div>
+    <button class="newtab" id="addTab">＋ New Tab</button>
+    <button class="iconbtn" id="settingsBtn" title="Settings">⚙</button>
+  </header>
+  <div class="toolbar">
+    <div class="omnibox">
+      <span>⌕</span>
+      <input id="address" autocomplete="off" spellcheck="false" placeholder="Search or enter a web address">
+    </div>
+  </div>
+  <main class="content" id="content"></main>
+  <aside class="settings" id="settings">
+    <div class="settings-head"><h2>Settings</h2><button class="iconbtn" id="closeSettings">×</button></div>
+    <section class="section"><h3>Tab Cloak</h3><p>Change the title and favicon shown for this Chicken page.</p><div class="row"><label>Clever<br><span style="color:#666;font-size:10px">Clever | Log in with Clever</span></label><button class="mini-btn" id="cloakClever">Use Clever</button></div><div class="row"><label>New Tab<br><span style="color:#666;font-size:10px">New Tab</span></label><button class="mini-btn" id="cloakNew">Use New Tab</button></div></section>
+    <section class="section"><h3>Panic Button</h3><p>The configured keybind directly navigates the current browser tab to the panic URL.</p><div class="label">Hotkey</div><input class="setting-input" id="panicKey" value="F9" placeholder="F9"><div class="label">Custom Panic URL</div><input class="setting-input" id="panicUrl" value="https://classroom.google.com/" placeholder="https://classroom.google.com/"></section>
+    <section class="section"><h3>AD Blocker</h3><p>Toggle the included blocking rule assets. Browser security still applies to cross-origin pages.</p><div class="row"><label>Enabled by default</label><button class="switch on" id="adToggle" aria-label="Toggle ad blocker"><i></i></button></div></section>
+    <section class="section"><h3>Proxy transport</h3><p>Saved preference. The alternate INDEX.HTML method uses the Scramjet static deployment and does not load a local transport module.</p><select class="setting-select" id="transport"><option value="libcurl">Libcurl (default)</option><option value="epoxy">Eproxy</option></select></section>
+    <section class="section"><h3>Proxy connection</h3><p>Web pages use the alternate Scramjet static method from the supplied INDEX.HTML reference.</p><button class="save-btn" id="saveSettings">Save settings</button></section>
+    <section class="section"><h3>Cookie Data</h3><p>Chicken preferences, cloak settings, transport settings, and chat display/room preferences are saved locally. The 0001 GameID access is intentionally not saved.</p></section>
+  </aside>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+const KEY='chicken-settings-v5';
+const defaults={cloak:'clever',panicKey:'F9',panicUrl:'https://classroom.google.com/',adblock:true,transport:'libcurl'};
+let settings={...defaults};
+try{settings={...defaults,...JSON.parse(localStorage.getItem(KEY)||'{}')}}catch{}
+let tabs=[];let active=0;let toastTimer;
+const $=id=>document.getElementById(id);
+const cleverIcon='https://kidsclassnest.com/images/icons/clever.png';
+const newIcon='https://kidsclassnest.com/images/icons/chromenewtab.ico';
+const SCRAMJET_STATIC_URL='https://hahahah67-pixel.github.io/scramjet-static/';
+
+function save(){localStorage.setItem(KEY,JSON.stringify(settings))}
+function toast(m){$('toast').textContent=m;$('toast').classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').classList.remove('show'),1800)}
+function applyCloak(){const fav=$('favicon');if(settings.cloak==='clever'){document.title='Clever | Log in with Clever';fav.href=cleverIcon}else{document.title='New Tab';fav.href=newIcon}}
+function looksUrl(v){return /^https?:\/\//i.test(v)||/^[a-z0-9.-]+\.[a-z]{2,}(\/.*)?$/i.test(v)}
+function normalize(v){v=String(v||'').trim();if(!v)return '';return looksUrl(v)?(/^https?:\/\//i.test(v)?v:'https://'+v):''}
+function searchUrl(q){return 'https://www.google.com/search?q='+encodeURIComponent(q)}
+function createTab(kind='home',url='',title='New Tab'){tabs.push({kind,url,title,frame:null,frameel:null,loadedUrl:''});active=tabs.length-1;render()}
+function closeTab(i){if(tabs.length===1){tabs[0]={kind:'home',url:'',title:'New Tab',frame:null,frameel:null,loadedUrl:''};active=0}else{if(tabs[i]?.frameel){try{tabs[i].frameel.remove()}catch{}}tabs.splice(i,1);active=Math.max(0,Math.min(active,tabs.length-1))}render()}
+function current(){return tabs[active]||tabs[0]}
+function tabIcon(t){return settings.cloak==='clever'?cleverIcon:newIcon}
+function renderTabs(){const wrap=$('tabs');wrap.innerHTML='';tabs.forEach((t,i)=>{const el=document.createElement('div');el.className='tab'+(i===active?' active':'');el.innerHTML=`<img src="${tabIcon(t)}" alt=""><span class="tab-title"></span><button class="tab-close" title="Close">×</button>`;el.querySelector('.tab-title').textContent=t.title;el.addEventListener('click',e=>{if(e.target.closest('.tab-close'))return;active=i;render()});el.querySelector('.tab-close').addEventListener('click',()=>closeTab(i));wrap.appendChild(el)})}
+function openLocalDino(){location.href='dino-game.html'}
+function homeView(v){v.innerHTML=`<div class="home"><div class="wordmark">Chicken</div><div class="subtitle">Search the web with a clean, private-feeling interface.</div><div class="search-wrap"><form class="big-search"><span class="search-icon">⌕</span><input placeholder="Search the web or enter an address" autocomplete="off"><button class="search-submit">Search</button></form></div><div class="shortcuts"><button class="shortcut" data-url="https://ask-chat.ai/" data-title="ChatGPT"><span class="shortcut-icon">✦</span><span><b>ChatGPT</b><small>ask-chat.ai</small></span></button><button class="shortcut" data-url="https://playlistsound.com/" data-title="Music"><span class="shortcut-icon">♪</span><span><b>Music</b><small>playlistsound.com</small></span></button><button class="shortcut" data-chat="1"><span class="shortcut-icon">◌</span><span><b>Chatroom</b><small>Global + LAN</small></span></button><button class="shortcut" data-local="dino-game.html"><span class="shortcut-icon">🦖</span><span><b>Dino game</b><small>dino-game.html</small></span></button></div></div>`;const form=v.querySelector('form');form.addEventListener('submit',e=>{e.preventDefault();const x=v.querySelector('input').value.trim();if(x)navigateInput(x)});v.querySelectorAll('.shortcut').forEach(b=>b.addEventListener('click',()=>{if(b.dataset.chat)openChat();else if(b.dataset.local)openLocalDino();else openUrl(b.dataset.url,b.dataset.title)}))}
+function loadingView(v,msg='Starting proxy…'){v.innerHTML=`<div class="proxy-state"><div class="proxy-card"><h2>${escapeHtml(msg)}</h2><p>Loading the destination through the Scramjet static method.</p></div></div>`}
+function errorView(v,msg){v.innerHTML=`<div class="proxy-state"><div class="proxy-card"><h2>Proxy unavailable</h2><p>${escapeHtml(msg)}</p></div></div>`}
+function escapeHtml(s){return String(s).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
+function chatView(v){const f=document.createElement('iframe');f.className='chat-frame';f.src='chatroom.html';f.title='Chatroom';f.setAttribute('allow','fullscreen; autoplay; clipboard-read; clipboard-write');v.appendChild(f)}
+function externalView(v,t){if(!t.frameel){const f=document.createElement('iframe');f.className='chat-frame';f.setAttribute('allow','fullscreen; autoplay; picture-in-picture; clipboard-read; clipboard-write');f.setAttribute('referrerpolicy','no-referrer');f.title=t.title||'Web page';t.frameel=f}v.appendChild(t.frameel);if(t.loadedUrl!==t.url){t.loadedUrl=t.url;try{t.frameel.src=SCRAMJET_STATIC_URL+'scramjet/'+encodeURIComponent(t.url);toast('Proxying • Scramjet static')}catch(e){console.error(e);errorView(v,e?.message||String(e))}}}
+function renderViews(){const c=$('content');c.innerHTML='';tabs.forEach((t,i)=>{const v=document.createElement('section');v.className='view'+(i===active?' active':'');if(t.kind==='home')homeView(v);else if(t.kind==='chat')chatView(v);else externalView(v,t);c.appendChild(v)})}
+function render(){renderTabs();renderViews();const t=current();$('address').value=t?.url||''}
+function openUrl(url,title){const t=current();if(t.frameel){try{t.frameel.remove()}catch{}}t.kind='web';t.url=url;t.title=title||host(url);t.frame=null;t.frameel=null;t.loadedUrl='';render()}
+function openChat(){const t=current();if(t.frameel){try{t.frameel.remove()}catch{}}t.kind='chat';t.url='chatroom.html';t.title='Chatroom';t.frame=null;t.frameel=null;t.loadedUrl='';render()}
+function host(url){try{return new URL(url).hostname.replace(/^www\./,'')||'New Tab'}catch{return 'New Tab'}}
+function navigateInput(raw){const x=String(raw||'').trim();if(!x)return;const u=normalize(x);openUrl(u||searchUrl(x),u?host(u):'Search')}
+function reloadCurrent(){const t=current();if(t?.kind==='web'&&t.url){t.loadedUrl='';render()}else render()}
+
+$('address').addEventListener('keydown',e=>{if(e.key==='Enter'){const x=e.currentTarget.value.trim();if(x)navigateInput(x)}});
+$('homeBtn').onclick=()=>{const t=current();if(t?.frameel){try{t.frameel.remove()}catch{}}t.kind='home';t.url='';t.title='New Tab';t.frame=null;t.frameel=null;t.loadedUrl='';render()};
+$('refreshBtn').onclick=reloadCurrent;
+$('backBtn').onclick=()=>{try{current()?.frameel?.contentWindow?.history.back()}catch{}};
+$('forwardBtn').onclick=()=>{try{current()?.frameel?.contentWindow?.history.forward()}catch{}};
+$('addTab').onclick=()=>createTab();
+$('settingsBtn').onclick=()=>{$('settings').classList.add('open')};
+$('closeSettings').onclick=()=>{$('settings').classList.remove('open')};
+$('cloakClever').onclick=()=>{settings.cloak='clever';save();applyCloak();renderTabs();toast('Clever cloak enabled')};
+$('cloakNew').onclick=()=>{settings.cloak='newtab';save();applyCloak();renderTabs();toast('New Tab cloak enabled')};
+$('panicKey').value=settings.panicKey||'F9';
+$('panicUrl').value=settings.panicUrl||defaults.panicUrl;
+$('adToggle').classList.toggle('on',settings.adblock!==false);
+$('transport').value=settings.transport||'libcurl';
+$('transport').onchange=()=>{settings.transport=$('transport').value;save();toast('Saved transport preference')};
+$('adToggle').onclick=()=>{settings.adblock=!settings.adblock;$('adToggle').classList.toggle('on',settings.adblock);save();toast(settings.adblock?'Ad blocker enabled':'Ad blocker disabled')};
+$('saveSettings').onclick=()=>{settings.panicKey=String($('panicKey').value||'F9').trim()||'F9';settings.panicUrl=String($('panicUrl').value||defaults.panicUrl).trim()||defaults.panicUrl;save();$('settings').classList.remove('open');toast('Settings saved')};
+window.addEventListener('keydown',e=>{if(e.key.toLowerCase()===(settings.panicKey||'F9').toLowerCase()){const u=settings.panicUrl||defaults.panicUrl;try{location.href=u}catch{window.open(u,'_blank')}}});
+window.addEventListener('storage',e=>{if(e.key===KEY){try{settings={...defaults,...JSON.parse(e.newValue||'{}')}}catch{}applyCloak();renderTabs()}});
+applyCloak();
+createTab();
+</script>
+</body>
+</html>
