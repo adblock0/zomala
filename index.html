@@ -6,8 +6,8 @@
 <title>Clever | Log in with Clever</title>
 <link id="favicon" rel="icon" href="https://kidsclassnest.com/images/icons/clever.png">
 <script>(function(){if(new URLSearchParams(location.search).get("access")!=="1"){location.replace("GameID.html");return;}history.replaceState(null,"",location.pathname);})();</script>
-<script src="/scram/scramjet.js"></script>
-<script src="/controller/controller.api.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mercuryworkshop/scramjet@2.0.67-alpha.2/dist/scramjet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mercuryworkshop/scramjet-controller@0.0.14/dist/controller.api.js"></script>
 <style>
 :root{--bg:#070707;--panel:#0d0d0d;--panel2:#111;--line:#232323;--text:#f6f6f6;--muted:#8e8e8e;--hover:#171717;--white:#fff;--black:#080808;--shadow:0 18px 60px rgba(0,0,0,.38)}
 *{box-sizing:border-box}html,body{height:100%;margin:0;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button,input,select{font:inherit}button{cursor:pointer}.hidden{display:none!important}
@@ -87,12 +87,12 @@ function dinoView(v){const wrap=document.createElement('div');wrap.className='di
 let scramjetController=null;
 let scramjetInitPromise=null;
 
-async function waitForChickenServiceWorker(registration){
+async function waitForServiceWorkerControl(registration){
   if(navigator.serviceWorker.controller) return navigator.serviceWorker.controller;
   return await new Promise((resolve,reject)=>{
     let done=false;
     const finish=(sw)=>{if(done)return;done=true;navigator.serviceWorker.removeEventListener('controllerchange',onChange);if(sw)resolve(sw);else reject(new Error('Service worker did not take control.'))};
-    const onChange=()=>finish(navigator.serviceWorker.controller||registration.active);
+    const onChange=()=>finish(navigator.serviceWorker.controller);
     navigator.serviceWorker.addEventListener('controllerchange',onChange,{once:true});
     if(registration.active && navigator.serviceWorker.controller) finish(navigator.serviceWorker.controller);
     setTimeout(()=>finish(navigator.serviceWorker.controller||registration.active),10000);
@@ -103,29 +103,41 @@ async function initScramjetController(){
   if(scramjetController) return scramjetController;
   if(scramjetInitPromise) return scramjetInitPromise;
   scramjetInitPromise=(async()=>{
-    if(!('serviceWorker' in navigator)) throw new Error('Service workers are required. Open Chicken through localhost or HTTPS.');
-    const registration=await navigator.serviceWorker.register('/sw.js',{scope:'/'});
-    const sw=await waitForChickenServiceWorker(registration);
-    const mode=(settings.transport||'libcurl').toLowerCase();
+    if(!window.isSecureContext && location.hostname!=='localhost' && location.hostname!=='127.0.0.1'){
+      throw new Error('Scramjet requires localhost or HTTPS.');
+    }
+    if(!('serviceWorker' in navigator)) throw new Error('Service workers are required.');
+    // This is the current Scramjet 2.x pattern: register the SW, wait for control,
+    // then construct Controller with a page-side Libcurl/Epoxy transport.
+    const swUrl=new URL('./sw.js',location.href);
+    const swScope=new URL('./',location.href).pathname;
+    const registration=await navigator.serviceWorker.register(swUrl.href,{scope:swScope});
+    try{ await registration.update(); }catch{}
+    const sw=await waitForServiceWorkerControl(registration);
+    if(!sw) throw new Error('No active Scramjet service worker is controlling this page.');
+    const mode=String(settings.transport||'libcurl').toLowerCase();
+    const WISP_URL='wss://wisp.mercurywork.shop/';
     let transport;
     if(mode==='epoxy'){
-      const mod=await import('/epoxy/index.mjs');
+      const mod=await import('https://cdn.jsdelivr.net/npm/@mercuryworkshop/epoxy-transport@3.0.1/dist/index.mjs');
       const EpoxyClient=mod.default||mod;
-      transport=new EpoxyClient({wisp:(location.protocol==='https:'?'wss':'ws')+'://'+location.host+'/wisp/'});
+      transport=new EpoxyClient({wisp:WISP_URL});
     }else{
-      const mod=await import('/libcurl/index.mjs');
+      const mod=await import('https://cdn.jsdelivr.net/npm/@mercuryworkshop/libcurl-transport@2.0.5/dist/index.mjs');
       const LibcurlClient=mod.default||mod;
-      transport=new LibcurlClient({wisp:(location.protocol==='https:'?'wss':'ws')+'://'+location.host+'/wisp/'});
+      transport=new LibcurlClient({wisp:WISP_URL});
     }
     if(typeof transport.init==='function') await transport.init();
-    scramjetController=new $scramjetController.Controller({
+    const Controller=window.$scramjetController?.Controller;
+    if(typeof Controller!=='function') throw new Error('Scramjet Controller API did not load.');
+    scramjetController=new Controller({
       serviceworker:sw,
       transport,
       config:{
-        prefix:'/~/sj/',
-        scramjetPath:'/scram/scramjet.js',
-        injectPath:'/controller/controller.inject.js',
-        wasmPath:'/scram/scramjet.wasm'
+        prefix:new URL('./~/sj/',location.href).href,
+        scramjetPath:'https://cdn.jsdelivr.net/npm/@mercuryworkshop/scramjet@2.0.67-alpha.2/dist/scramjet.js',
+        injectPath:'https://cdn.jsdelivr.net/npm/@mercuryworkshop/scramjet-controller@0.0.14/dist/controller.inject.js',
+        wasmPath:'https://cdn.jsdelivr.net/npm/@mercuryworkshop/scramjet@2.0.67-alpha.2/dist/scramjet.wasm'
       }
     });
     await scramjetController.wait();
@@ -150,7 +162,7 @@ function externalView(v,t){
   t.proxyStarted=true;
   loadingView(v,'Starting proxy…');
   initScramjetController().then(controller=>{
-    if(t.frameel.parentElement!==v){v.appendChild(t.frameel)}
+    if(t.frameel.parentElement!==v) v.appendChild(t.frameel);
     t.frameel.style.display='block';
     t.scramFrame=controller.createFrame(t.frameel);
     t.scramFrame.go(t.url);
