@@ -1,13 +1,25 @@
-CHICKEN - UPDATED SCRAMJET STATIC METHOD
+CHICKEN — UPDATED LOCAL SCRAMJET BUILD
 
-1. Serve this folder over HTTPS or localhost (do not double-click index.html).
-2. Open index.html.
-3. Enter GameID code 0001 when prompted. The code is NOT persisted.
-4. Dino game opens as a Chicken internal app window using dino-game.html.
-5. Online web tabs bootstrap the supplied Scramjet STATIC deployment first, then navigate to its encoded /scramjet/ route.
-6. The included ad-blocker files are preserved.
+IMPORTANT
+The previous static method used https://hahahah67-pixel.github.io/scramjet-static/.
+That deployment currently returns a GitHub Pages 404, so this build no longer references it.
 
-Scramjet STATIC reference:
-https://github.com/hahahah67-pixel/scramjet-static
+THIS BUILD
+- Uses the current Scramjet 2.x controller/service-worker architecture.
+- Runs Wisp locally at /wisp/.
+- Uses Libcurl by default and includes Epoxy as the alternate transport.
+- Serves Scramjet, controller, transport, and utility browser assets from the local server.
+- Keeps the Chicken UI and existing tabs/settings.
+- Keeps the supplied GameID.html unchanged.
+- Keeps the supplied ad-blocker files unchanged.
+- Keeps the Dino game in its custom internal window.
 
-The static method requires a secure origin (HTTPS or localhost) because it registers a Service Worker.
+STARTING
+1. Install Node.js 20 or newer.
+2. Double-click Start Chicken.bat.
+3. Leave the server window open.
+4. Use the browser window that opens at http://localhost:8080/.
+5. Do NOT double-click index.html directly.
+
+GITHUB PAGES
+GitHub Pages can host the Chicken front end, but it cannot provide the local Wisp WebSocket server this Scramjet build needs. The proxy portion must run on localhost or another server that can keep a WebSocket open.

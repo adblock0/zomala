@@ -5,7 +5,10 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Clever | Log in with Clever</title>
 <link id="favicon" rel="icon" href="https://kidsclassnest.com/images/icons/clever.png">
-<script>(function(){if(new URLSearchParams(location.search).get("access")!=="1"){location.replace("GameID.html");return;}history.replaceState(null,"",location.pathname);})();</script><style>
+<script>(function(){if(new URLSearchParams(location.search).get("access")!=="1"){location.replace("GameID.html");return;}history.replaceState(null,"",location.pathname);})();</script>
+<script src="/scram/scramjet.js"></script>
+<script src="/controller/controller.api.js"></script>
+<style>
 :root{--bg:#070707;--panel:#0d0d0d;--panel2:#111;--line:#232323;--text:#f6f6f6;--muted:#8e8e8e;--hover:#171717;--white:#fff;--black:#080808;--shadow:0 18px 60px rgba(0,0,0,.38)}
 *{box-sizing:border-box}html,body{height:100%;margin:0;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button,input,select{font:inherit}button{cursor:pointer}.hidden{display:none!important}
 body{overflow:hidden}.app{height:100%;display:flex;flex-direction:column;background:radial-gradient(circle at 50% -15%,#161616 0,#0b0b0b 38%,#070707 72%)}
@@ -61,7 +64,7 @@ let tabs=[];let active=0;let toastTimer;
 const $=id=>document.getElementById(id);
 const cleverIcon='https://kidsclassnest.com/images/icons/clever.png';
 const newIcon='https://kidsclassnest.com/images/icons/chromenewtab.ico';
-const SCRAMJET_STATIC_URL='https://hahahah67-pixel.github.io/scramjet-static/';
+const SCRAMJET_STATIC_URL='';
 
 function save(){localStorage.setItem(KEY,JSON.stringify(settings))}
 function toast(m){$('toast').textContent=m;$('toast').classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').classList.remove('show'),1800)}
@@ -74,24 +77,101 @@ function closeTab(i){if(tabs.length===1){tabs[0]={kind:'home',url:'',title:'New 
 function current(){return tabs[active]||tabs[0]}
 function tabIcon(t){return settings.cloak==='clever'?cleverIcon:newIcon}
 function renderTabs(){const wrap=$('tabs');wrap.innerHTML='';tabs.forEach((t,i)=>{const el=document.createElement('div');el.className='tab'+(i===active?' active':'');el.innerHTML=`<img src="${tabIcon(t)}" alt=""><span class="tab-title"></span><button class="tab-close" title="Close">×</button>`;el.querySelector('.tab-title').textContent=t.title;el.addEventListener('click',e=>{if(e.target.closest('.tab-close'))return;active=i;render()});el.querySelector('.tab-close').addEventListener('click',()=>closeTab(i));wrap.appendChild(el)})}
-function openDino(){const t=current();if(t.frameel){try{t.frameel.remove()}catch{}}t.kind='dino';t.url='dino-game.html';t.title='Dino game';t.frame=null;t.frameel=null;t.loadedUrl='';render()}
+function openDino(){const t=current();if(t.frameel){try{t.frameel.remove()}catch{}}t.kind='dino';t.url='dino-game.html';t.title='Dino game';t.frame=null;t.frameel=null;t.loadedUrl='';t.scramFrame=null;t.proxyStarted=false;render()}
 function homeView(v){v.innerHTML=`<div class="home"><div class="wordmark">Chicken</div><div class="subtitle">Search the web with a clean, private-feeling interface.</div><div class="search-wrap"><form class="big-search"><span class="search-icon">⌕</span><input placeholder="Search the web or enter an address" autocomplete="off"><button class="search-submit">Search</button></form></div><div class="shortcuts"><button class="shortcut" data-url="https://ask-chat.ai/" data-title="ChatGPT"><span class="shortcut-icon">✦</span><span><b>ChatGPT</b><small>ask-chat.ai</small></span></button><button class="shortcut" data-url="https://playlistsound.com/" data-title="Music"><span class="shortcut-icon">♪</span><span><b>Music</b><small>playlistsound.com</small></span></button><button class="shortcut" data-chat="1"><span class="shortcut-icon">◌</span><span><b>Chatroom</b><small>Global + LAN</small></span></button><button class="shortcut" data-dino="1"><span class="shortcut-icon">🦖</span><span><b>Dino game</b><small>dino-game.html</small></span></button></div></div>`;const form=v.querySelector('form');form.addEventListener('submit',e=>{e.preventDefault();const x=v.querySelector('input').value.trim();if(x)navigateInput(x)});v.querySelectorAll('.shortcut').forEach(b=>b.addEventListener('click',()=>{if(b.dataset.chat)openChat();else if(b.dataset.dino)openDino();else openUrl(b.dataset.url,b.dataset.title)}))}
 function loadingView(v,msg='Starting proxy…'){v.innerHTML=`<div class="proxy-state"><div class="proxy-card"><h2>${escapeHtml(msg)}</h2><p>Loading the destination through the Scramjet static method.</p></div></div>`}
 function errorView(v,msg){v.innerHTML=`<div class="proxy-state"><div class="proxy-card"><h2>Proxy unavailable</h2><p>${escapeHtml(msg)}</p></div></div>`}
 function escapeHtml(s){return String(s).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
 function chatView(v){const f=document.createElement('iframe');f.className='chat-frame';f.src='chatroom.html';f.title='Chatroom';f.setAttribute('allow','fullscreen; autoplay; clipboard-read; clipboard-write');v.appendChild(f)}
 function dinoView(v){const wrap=document.createElement('div');wrap.className='dino-wrap';const box=document.createElement('div');box.className='dino-window';box.innerHTML='<div class="dino-titlebar"><span class="dino-dot"></span><span class="dino-title">Dino game</span><button class="dino-btn" type="button" title="Minimize">—</button><button class="dino-btn" type="button" title="Close">×</button></div>';const frame=document.createElement('iframe');frame.className='dino-frame';frame.src='dino-game.html';frame.title='Dino game';frame.setAttribute('allow','fullscreen; autoplay');box.appendChild(frame);const btns=box.querySelectorAll('.dino-btn');btns[0].addEventListener('click',()=>{box.classList.toggle('minimized');if(box.classList.contains('minimized')){btns[0].textContent='▢';}else{btns[0].textContent='—';}});btns[1].addEventListener('click',()=>{const t=current();t.kind='home';t.url='';t.title='New Tab';render()});wrap.appendChild(box);v.appendChild(wrap)}
-function externalView(v,t){if(!t.frameel){const f=document.createElement('iframe');f.className='chat-frame';f.setAttribute('allow','fullscreen; autoplay; picture-in-picture; clipboard-read; clipboard-write');f.setAttribute('referrerpolicy','no-referrer');f.title=t.title||'Web page';t.frameel=f;t.proxyBooting=false;t.proxyToken=''}v.appendChild(t.frameel);if(t.loadedUrl!==t.url&&t.proxyToken!==t.url){t.loadedUrl='';t.proxyToken=t.url;t.proxyBooting=true;try{t.frameel.onload=()=>{if(!t.proxyBooting||t.proxyToken!==t.url)return;t.proxyBooting=false;setTimeout(()=>{if(t.proxyToken!==t.url)return;const target=SCRAMJET_STATIC_URL+'scramjet/'+encodeURIComponent(t.url);t.frameel.src=target;toast('Proxying • Scramjet static')},4500)};t.frameel.onerror=()=>{if(t.proxyToken===t.url)errorView(v,'The Scramjet static page could not initialize.');};t.frameel.src=SCRAMJET_STATIC_URL+'?chicken-bootstrap=1'}catch(e){console.error(e);errorView(v,e?.message||String(e))}}}
+let scramjetController=null;
+let scramjetInitPromise=null;
+
+async function waitForChickenServiceWorker(registration){
+  if(navigator.serviceWorker.controller) return navigator.serviceWorker.controller;
+  return await new Promise((resolve,reject)=>{
+    let done=false;
+    const finish=(sw)=>{if(done)return;done=true;navigator.serviceWorker.removeEventListener('controllerchange',onChange);if(sw)resolve(sw);else reject(new Error('Service worker did not take control.'))};
+    const onChange=()=>finish(navigator.serviceWorker.controller||registration.active);
+    navigator.serviceWorker.addEventListener('controllerchange',onChange,{once:true});
+    if(registration.active && navigator.serviceWorker.controller) finish(navigator.serviceWorker.controller);
+    setTimeout(()=>finish(navigator.serviceWorker.controller||registration.active),10000);
+  });
+}
+
+async function initScramjetController(){
+  if(scramjetController) return scramjetController;
+  if(scramjetInitPromise) return scramjetInitPromise;
+  scramjetInitPromise=(async()=>{
+    if(!('serviceWorker' in navigator)) throw new Error('Service workers are required. Open Chicken through localhost or HTTPS.');
+    const registration=await navigator.serviceWorker.register('/sw.js',{scope:'/'});
+    const sw=await waitForChickenServiceWorker(registration);
+    const mode=(settings.transport||'libcurl').toLowerCase();
+    let transport;
+    if(mode==='epoxy'){
+      const mod=await import('/epoxy/index.mjs');
+      const EpoxyClient=mod.default||mod;
+      transport=new EpoxyClient({wisp:(location.protocol==='https:'?'wss':'ws')+'://'+location.host+'/wisp/'});
+    }else{
+      const mod=await import('/libcurl/index.mjs');
+      const LibcurlClient=mod.default||mod;
+      transport=new LibcurlClient({wisp:(location.protocol==='https:'?'wss':'ws')+'://'+location.host+'/wisp/'});
+    }
+    if(typeof transport.init==='function') await transport.init();
+    scramjetController=new $scramjetController.Controller({
+      serviceworker:sw,
+      transport,
+      config:{
+        prefix:'/~/sj/',
+        scramjetPath:'/scram/scramjet.js',
+        injectPath:'/controller/controller.inject.js',
+        wasmPath:'/scram/scramjet.wasm'
+      }
+    });
+    await scramjetController.wait();
+    return scramjetController;
+  })().catch(err=>{scramjetInitPromise=null;throw err});
+  return scramjetInitPromise;
+}
+
+function externalView(v,t){
+  if(!t.frameel){
+    const f=document.createElement('iframe');
+    f.className='chat-frame';
+    f.setAttribute('allow','fullscreen; autoplay; picture-in-picture; clipboard-read; clipboard-write');
+    f.setAttribute('referrerpolicy','no-referrer');
+    f.title=t.title||'Web page';
+    t.frameel=f;
+    t.scramFrame=null;
+    t.proxyStarted=false;
+  }
+  v.appendChild(t.frameel);
+  if(t.scramFrame && t.proxyStarted) return;
+  t.proxyStarted=true;
+  loadingView(v,'Starting proxy…');
+  initScramjetController().then(controller=>{
+    if(t.frameel.parentElement!==v){v.appendChild(t.frameel)}
+    t.frameel.style.display='block';
+    t.scramFrame=controller.createFrame(t.frameel);
+    t.scramFrame.go(t.url);
+    toast('Proxying • Scramjet');
+    const tt=document.querySelector('.tab.active .tab-title');
+    if(tt) tt.textContent=host(t.url);
+  }).catch(err=>{
+    t.proxyStarted=false;
+    errorView(v,'Scramjet could not start: '+(err?.message||String(err)));
+  });
+}
 function renderViews(){const c=$('content');c.innerHTML='';tabs.forEach((t,i)=>{const v=document.createElement('section');v.className='view'+(i===active?' active':'');if(t.kind==='home')homeView(v);else if(t.kind==='chat')chatView(v);else if(t.kind==='dino')dinoView(v);else externalView(v,t);c.appendChild(v)})}
 function render(){renderTabs();renderViews();const t=current();$('address').value=t?.url||''}
-function openUrl(url,title){const t=current();if(t.frameel){try{t.frameel.remove()}catch{}}t.kind='web';t.url=url;t.title=title||host(url);t.frame=null;t.frameel=null;t.loadedUrl='';render()}
-function openChat(){const t=current();if(t.frameel){try{t.frameel.remove()}catch{}}t.kind='chat';t.url='chatroom.html';t.title='Chatroom';t.frame=null;t.frameel=null;t.loadedUrl='';render()}
+function openUrl(url,title){const t=current();if(t.frameel){try{t.frameel.remove()}catch{}}t.kind='web';t.url=url;t.title=title||host(url);t.frame=null;t.frameel=null;t.loadedUrl='';t.scramFrame=null;t.proxyStarted=false;render()}
+function openChat(){const t=current();if(t.frameel){try{t.frameel.remove()}catch{}}t.kind='chat';t.url='chatroom.html';t.title='Chatroom';t.frame=null;t.frameel=null;t.loadedUrl='';t.scramFrame=null;t.proxyStarted=false;render()}
 function host(url){try{return new URL(url).hostname.replace(/^www\./,'')||'New Tab'}catch{return 'New Tab'}}
 function navigateInput(raw){const x=String(raw||'').trim();if(!x)return;const u=normalize(x);openUrl(u||searchUrl(x),u?host(u):'Search')}
-function reloadCurrent(){const t=current();if(t?.kind==='web'&&t.url){t.loadedUrl='';t.proxyToken='';t.proxyBooting=false;render()}else if(t?.kind==='dino'&&t.frameel){render()}else render()}
+function reloadCurrent(){const t=current();if(t?.kind==='web'&&t.scramFrame){try{t.scramFrame.go(t.url)}catch{render()}}else if(t?.kind==='dino'&&t.frameel){render()}else render()}
 
 $('address').addEventListener('keydown',e=>{if(e.key==='Enter'){const x=e.currentTarget.value.trim();if(x)navigateInput(x)}});
-$('homeBtn').onclick=()=>{const t=current();if(t?.frameel){try{t.frameel.remove()}catch{}}t.kind='home';t.url='';t.title='New Tab';t.frame=null;t.frameel=null;t.loadedUrl='';render()};
+$('homeBtn').onclick=()=>{const t=current();if(t?.frameel){try{t.frameel.remove()}catch{}}t.kind='home';t.url='';t.title='New Tab';t.frame=null;t.frameel=null;t.loadedUrl='';t.scramFrame=null;t.proxyStarted=false;render()};
 $('refreshBtn').onclick=reloadCurrent;
 $('backBtn').onclick=()=>{try{current()?.frameel?.contentWindow?.history.back()}catch{}};
 $('forwardBtn').onclick=()=>{try{current()?.frameel?.contentWindow?.history.forward()}catch{}};
