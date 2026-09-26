@@ -7328,6 +7328,15 @@
   })()
 </script>
 
+<style id="chicken-dino-standalone-fix">
+  html.offline, html.offline body { min-height:100%; }
+  html.offline body { background:#fff; margin:0; overflow:hidden; }
+  html.offline #main-frame-error { display:block; min-height:100vh; box-sizing:border-box; }
+  html.offline .interstitial-wrapper { min-height:100vh; box-sizing:border-box; }
+  html.offline #main-content { min-height:100vh; position:relative; }
+  html.offline .runner-container { left:50%; transform:translateX(-50%); top:35px; }
+  html.offline .runner-canvas { left:50%; transform:translateX(-50%); }
+</style>
 </head>
 <body style="font-family: 'Segoe UI', Tahoma, sans-serif; font-size: 75%">
   <div id="main-frame-error" class="interstitial-wrapper" jstcache="0">
@@ -7351,7 +7360,13 @@
 <script >
   var runner;
   window.onload=function(){
-    runner = new Runner("#main-content")
+    // This file originally came from Chromium's internal offline error page.
+    // In a normal GitHub Pages document there is no Chromium error-page controller
+    // to add the `offline` class, so the runner is otherwise visually suppressed.
+    document.documentElement.classList.add('offline');
+    document.body.classList.remove('neterror');
+    runner = new Runner("#main-content");
+    try { runner.containerEl?.focus(); } catch (e) {}
   }
 </script>
 
